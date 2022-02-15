@@ -131,11 +131,14 @@ class Debugger{
     }
 
     // Для ajax ответов
-    public static function res($btn=false){
+    public static function res($btn=false,$img=''){
         $html = '<div style="font-size:18px;">';
+        if($img == ''){
+            $img = '/images/animate/loading.gif';
+        }
 
         if($btn !== false){
-            $html .= '<button name="'.$btn.'" class="btn btn-primary btn-xs" style="position:relative;"><img src="/images/animate/loading.gif" class="loading" style="position: absolute;top: -2px;left: -40px;display:none;" />Нажать</button><br><br>';
+            $html .= '<button name="'.$btn.'" class="btn btn-primary btn-xs" style="position:relative;"><img src="'.$img.'" class="loading" style="position: absolute;top: -2px;left: -40px;display:none;" />Нажать</button><br><br>';
         }
 
         $html .= '<div class="res">result</div></div>';
