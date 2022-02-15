@@ -393,5 +393,33 @@ class Debugger{
         return strrev($str_itog_rev);
     }// function getExtension(...)
 
+    /*
+     * Есть ли все указанные ключи в массиве.
+     * Все ключи, указанные в массиве $keys
+     * должны присутствовать в массиве $arr
+     */
+    public static function array_keys_exists(array $keys, array $arr) {
+        $result = [];
+        foreach($arr as $key=>$value){
+            if(in_array($key,$keys)){
+                $search_key = array_search($key, $keys);
+                $result[$search_key] = $key;
+            }
+        }
+        if(count($result)){
+
+            sort($keys);
+            sort($result);
+
+            $required_keys = implode($keys);
+            $keys = implode($result);
+
+//            pe($required_keys.' = '.$keys);
+
+            if($required_keys == $keys) return true;
+            else return false;
+        }else return false;
+    }
+
 }// Class
 
