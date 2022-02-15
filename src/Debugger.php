@@ -398,7 +398,7 @@ class Debugger{
      * Все ключи, указанные в массиве $keys
      * должны присутствовать в массиве $arr
      */
-    public static function array_keys_exists(array $keys, array $arr) {
+    public static function arrayKeysExists(array $keys, array $arr) {
         $result = [];
         foreach($arr as $key=>$value){
             if(in_array($key,$keys)){
