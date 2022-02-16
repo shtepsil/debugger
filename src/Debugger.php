@@ -10,6 +10,9 @@ namespace SergBrag\Debugger;
 
 class Debugger{
 
+    public static $d = false;
+    public static $c_data = false;
+
     /*
      * Скрипты для разработки
      */
