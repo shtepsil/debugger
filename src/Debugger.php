@@ -11,6 +11,7 @@ namespace SergBrag\Debugger;
 class Debugger{
 
     public static $d = false;
+    public static $r = false;
     public static $c_data = false;
 
     /*
