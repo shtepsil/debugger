@@ -1,0 +1,21 @@
+{
+    "name": "serg-brag/debugger",
+    "description": "Debugger class",
+    "type": "library",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "SergBrag\\Debugger\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Brazhnikov",
+            "email": "akvarius_84@mail.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.4.0"
+    }
+}
