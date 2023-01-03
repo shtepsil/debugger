@@ -7,3 +7,5 @@
 - git push -u origin main
 - git push origin --delete master удалить удалённую ветку
 - git branch -d master удалить локальную ветку
+-git push -f --set-upstream origin main внести обновлени удалённый репозиторий
+
