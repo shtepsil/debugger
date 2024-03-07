@@ -537,5 +537,10 @@ class Debugger
         return $array;
     }
 
+    public function tttest()
+    {
+        return 'tttest()';
+    }
+
 }// Class
 
