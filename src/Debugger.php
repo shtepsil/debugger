@@ -537,6 +537,10 @@ class Debugger
         return $array;
     }
 
+    /**
+     * Тестирование GIT
+     * @return string
+     */
     public function tttest()
     {
         return 'tttest()';
