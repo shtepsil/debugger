@@ -19,84 +19,6 @@ class Debugger
     public static $get_headers = false;
     public static $curl = false;
     public static $view_response = false;
-    public $ip_debug_detect = 0;
-
-    public function __construct()
-    {
-        if(defined ('DEBUG_DETECT') AND DEBUG_DETECT){
-            /*
-             * Все сайты, которые есть в массиве $debug_sites_allowed,
-             * будут отображать debug скрипты,
-             * если DEBUG_IP_DETECT пустая строка.
-             */
-            $debug_sites_allowed = [
-                'test.kingfisher.kz'
-            ];
-
-            /*
-             * Строка условия:
-             * !in_array($_SERVER['SERVER_NAME'], ['kingfisher.kz'])
-             * полностью вырубает весь if,
-             * если сайт находится на kingfisher.kz и нужно использовать debug по IP,
-             * то эту строку нужно закомментировать.
-             */
-            if(
-                defined ('DEBUG_IP_DETECT')
-                AND (DEBUG_IP_DETECT != '' OR $_SERVER['REMOTE_ADDR'] == '127.0.0.1')
-                AND !is_bool(DEBUG_IP_DETECT)
-                AND DEBUG_IP_DETECT !== 0 AND DEBUG_IP_DETECT !== 1
-                AND ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' OR $_SERVER['REMOTE_ADDR'] == DEBUG_IP_DETECT)
-                AND (!in_array($_SERVER['SERVER_NAME'], ['kingfisher.kz']) OR DEBUG_KINGFISHER_DETECT)
-            ){
-                /*
-                 * Если DEBUG_IP_DETECT задан как пустая строка и это локальный IP,
-                 * то нужно чтобы DEBUG_IP_DETECT работал на локалке, а для этого он не должен быть пустым,
-                 * зададим туда просто 1.
-                 * ========================================================================================
-                 * В общем если DEBUG_IP_DETECT пустая строка - то на локалке всё должно работать.
-                 * А иначе, значение для $this->ip_debug_detect, берём из DEBUG_IP_DETECT.
-                 */
-                if(DEBUG_IP_DETECT == '' AND $_SERVER['REMOTE_ADDR'] == '127.0.0.1'){
-                    $this->ip_debug_detect = 1;
-                }else{
-                    $this->ip_debug_detect = DEBUG_IP_DETECT;
-                }
-            }else{
-                /*
-                 * Если DEBUG_IP_DETECT пуст и это не локальный сервер, то
-                 * debug скрипты будут работать на всех сайтах, указанных в массиве $debug_sites_allowed,
-                 * кроме kingfisher.kz
-                 */
-                if(
-                    in_array($_SERVER['SERVER_NAME'], $debug_sites_allowed)
-                    AND $_SERVER['SERVER_NAME'] != 'kingfisher.kz'
-                ){
-                    $this->ip_debug_detect = 1;
-                }
-            }
-
-            // Принудительное включение debug скриптов
-            if(
-                defined ('DEBUG_DETECT_ALL')
-                AND (
-                    (is_bool(DEBUG_DETECT_ALL) AND DEBUG_DETECT_ALL)
-                    OR (DEBUG_DETECT_ALL == 1)
-                )
-            ){
-                $this->ip_debug_detect = DEBUG_DETECT_ALL;
-            }
-        }
-
-        define('DEBUG_IS', $this->ip_debug_detect);
-        define('DEBUG_AJAX', $this->ip_debug_detect);
-        define('DEBUG_PRI', $this->ip_debug_detect);
-        define('DEBUG_PRE', $this->ip_debug_detect);
-        define('DEBUG_PEX', $this->ip_debug_detect);
-        define('DEBUG_PE', $this->ip_debug_detect);
-        define('DEBUG_RN', $this->ip_debug_detect);
-        define('DEBUG_RES', $this->ip_debug_detect);
-
-    }
 
     private static function s(){
         echo '<div
@@ -181,7 +103,6 @@ class Debugger
         echo '</pre>';
     }
     public static function pri($arr = null){
-        if(!DEBUG_PRI) return false;
         echo '<pre style="font: 10pt/12pt Arial;">';
         print_r($arr);
         echo '</pre>';
@@ -197,9 +118,6 @@ class Debugger
         printf("<pre style=\"font: 10pt/12pt Arial;\">%s</pre>", $json);
     }
     public static function pre($str){
-        if(!DEBUG_PRE){
-            return false;
-        }
         self::s();
         echo '<pre>';
         print_r($str);
@@ -286,7 +204,6 @@ class Debugger
 
     // Для ajax ответов
     public static function res($btn = false, $res_class = 'res'){
-        if(!DEBUG_RES) return false;
         $html = '<div style="font-size:18px;">';
 
         if($btn !== false){
@@ -335,7 +252,6 @@ class Debugger
      * для отладки в Ajax
     */
     public static function pe($arr) {
-        if(!DEBUG_PE) return false;
         echo '<br>';
         echo self::toString($arr);
         exit();
@@ -357,7 +273,6 @@ class Debugger
      * для отладки в Ajax
     */
     public static function pex($arr) {
-        if(!DEBUG_PEX) return false;
         echo '<pre>';
         print_r($arr);
         exit('</pre>');
@@ -581,7 +496,6 @@ class Debugger
     }
 
     public static function ajax($str = '', $key_response = 'response'){
-        if(!DEBUG_AJAX){ return false; }
         self::mainAjax($str, $key_response);
     }
 
@@ -594,12 +508,6 @@ class Debugger
         if(self::$flag){
             self::ajax($data);
         }
-    }
-
-    public static function rn($data)
-    {
-        if(!DEBUG_RN){ return false; }
-        return $data;
     }
 
     public static function clearEscapeU0000($str = ''){
@@ -705,12 +613,6 @@ class Debugger
             $local = true;
         }
         return $local;
-    }
-
-    public static function isDebug()
-    {
-        if(!DEBUG_IS) return false;
-        return true;
     }
 
     public static function forBy($data, $prop, $show = false)
